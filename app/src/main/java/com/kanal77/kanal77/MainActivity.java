@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     Button button_contact;
     Button button_weather;
     Button button_alarm;
+    Button button_youtube;
 
     MediaMetadataRetriever metaRetriver;
 
@@ -48,11 +49,9 @@ public class MainActivity extends AppCompatActivity {
         button_contact  = (Button)findViewById(R.id.button_contact);
         button_weather = (Button)findViewById(R.id.button_weather);
         button_alarm = (Button)findViewById(R.id.button_alarm);
+        button_youtube = (Button) findViewById(R.id.button_youtube);
 
-        //Print weather
-        for( int j=0; j<weather.size(); j++){
-            Log.d("Weather", weather.get(j).toString());
-        }
+
 
         //Start playing the radio stream
             playRadio();
@@ -107,6 +106,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, Alarm2.class);
                 startActivity(i);
+            }
+        });
+
+        button_youtube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mPlayer.stop();
+                Intent intent = new Intent(MainActivity.this, YouTube.class );
+                startActivity(intent);
             }
         });
 
