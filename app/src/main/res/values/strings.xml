@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Kanal77</string>
+
+    <!-- Loading strings -->
+    <string name="no_log_desc">Kanal 77 logo</string>
+
+    <!-- MainActivity strings -->
+    <string name="main_play">Play</string>
+    <string name="main_pause">Pause</string>
+    <string name="main_logo_desc">kanal77 logo</string>
+
+    <!-- ContactActivity strings-->
+    <string name="contact_title">"Contact:"</string>
+    <string name="contact_phones">"Contact phone:"</string>
+    <string name="contact_phone">"032 397&#8211;707"</string>
+    <string name="contact_fax">"032 397&#8211;717   (fax)"</string>
+
+    <string name="contact_email">"Email:"</string>
+    <string name="official_email_text">"Official email address:"</string>
+    <string name="official_email">"kanal77@kanal77.com.mk"</string>
+    <string name="webdesc_email_text">"Web Desc email address:"</string>
+    <string name="webdesc_email">"web@kanal77.com.mk"</string>
+    <string name="finance_email_text">"Finance:"</string>
+    <string name="finance_email">"finansii@kanal77.com.mk"</string>
+    <string name="marketing_email_text">"Marketing:"</string>
+    <string name="marketing_email">"marketing@kanal77.com.mk"</string>
+
+    <!-- Alarm Activity -->
+    <string name="button_start_alarm">"Set alarm"</string>
+    <string name="button_stop_alarm">"Cancel alarm"</string>
+    <string name="button_add_alarm">"Add alarm"</string>
+    <string name="current_alarm">"Current alarm:"</string>
+    <string name="repeat_interval_info">"Repeat off"</string>
+
+
+    <string name="interval_fifteen_minutes">"15 minutes"</string>
+    <string name="interval_half_hour">"30 minutes"</string>
+    <string name="interval_hour">"1 hour"</string>
+    <string name="interval_half_day">"6 hours"</string>
+    <string name="interval_day">"24 hours"</string>
+    <string name="interval_off">"No Repeat"</string>
+
+
+    <!--Weather Ctivity -->
+    <string name="getting_weather_info">"Gathering weather info &#8230;"</string>
+    <string name="getting_weather_info_error">"Weather informations are currently unavailable"</string>
+    <string name="title_activity_alarm2">Alarm2</string>
+
+
+</resources>

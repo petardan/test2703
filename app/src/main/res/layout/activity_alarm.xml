@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAlarm"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/current_alarm_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:background="@drawable/white_stroke_frame"
+        android:orientation="vertical"
+        android:padding="5sp">
+
+        <TextView
+            android:id="@+id/current_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/current_alarm"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/alarm_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/current_time"
+            android:layout_gravity="center"
+            android:text="00:00"
+            android:textColor="#ffffff"
+            android:textSize="100sp" />
+
+        <TextView
+            android:id="@+id/repeat_interval_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/alarm_time"
+            android:text="@string/repeat_interval_info"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="#00ffffff"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20sp">
+
+            <RadioGroup
+                android:id="@+id/radio_repeat_interval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/interval_fifteen_minutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="#ffffff"
+                    android:checked="true"
+                    android:text="@string/interval_fifteen_minutes"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/interval_half_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="#ffffff"
+                    android:text="@string/interval_half_hour"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/interval_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="#ffffff"
+                    android:text="@string/interval_hour"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/interval_half_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="#ffffff"
+                    android:text="@string/interval_half_day"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/interval_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="#ffffff"
+                    android:text="@string/interval_day"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/interval_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="#ffffff"
+                    android:text="@string/interval_off"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/button_start_alarm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_start_alarm" />
+
+            <Button
+                android:id="@+id/button_stop_alarm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_stop_alarm" />
+
+            <TextView
+                android:id="@+id/alarm_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#4CAF50"
+                android:textSize="50sp" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
