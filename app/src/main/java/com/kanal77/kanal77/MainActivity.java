@@ -1,5 +1,6 @@
 package com.kanal77.kanal77;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
     MediaMetadataRetriever metaRetriver;
 
+    AudioManager audioManager;
+
+    Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -51,10 +56,19 @@ public class MainActivity extends AppCompatActivity {
         button_alarm = (Button)findViewById(R.id.button_alarm);
         button_youtube = (Button) findViewById(R.id.button_youtube);
 
+        context = this;
 
 
-        //Start playing the radio stream
+         audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+
+
+
+        //Start playing the radio stream if music is not active
+        if(audioManager.isMusicActive()){
+        }
+        else {
             playRadio();
+        }
 
 
         //Buttons onClickListeners
@@ -180,6 +194,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(audioManager.isMusicActive()){
+        }
+        else {
+            playRadio();
+        }
     }
 
     @Override
