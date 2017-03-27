@@ -14,7 +14,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/webView"/>
+        android:id="@+id/webView" />
 
 </RelativeLayout>
 
