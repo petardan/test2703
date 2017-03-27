@@ -33,7 +33,9 @@
             android:screenOrientation="portrait" />
 
         <receiver android:name=".AlarmReceiver" />
-        <activity android:name=".Alarm2"></activity>
+
+        <activity android:name=".Alarm2" />
+        <activity android:name=".YouTube" />
     </application>
 
 </manifest>
