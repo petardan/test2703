@@ -2,10 +2,12 @@ package com.kanal77.kanal77;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,9 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
     MediaMetadataRetriever metaRetriver;
 
-    AudioManager audioManager;
-
     Context context;
+
+    SharedPreferences mPrefs;
+
+    Boolean radioIsPlaying;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +62,12 @@ public class MainActivity extends AppCompatActivity {
 
         context = this;
 
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
-         audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-
-
+        radioIsPlaying = mPrefs.getBoolean("RADIO_IS_PLAYING", false);
 
         //Start playing the radio stream if music is not active
-        if(audioManager.isMusicActive()){
-        }
-        else {
             playRadio();
-        }
 
 
         //Buttons onClickListeners
@@ -80,12 +79,19 @@ public class MainActivity extends AppCompatActivity {
                     button_startstop.setText(play);
                     //mPlayer.release();
                     mPlayer.pause();
+                    SharedPreferences.Editor editor = mPrefs.edit();
+                    editor.putBoolean("RADIO_IS_PLAYING", false);
+                    editor.apply();
+
                 }
                 else{
                     button_startstop.setText(pause);
                     //mPlayer.release();
                     //playRadio();
                     mPlayer.start();
+                    SharedPreferences.Editor editor = mPrefs.edit();
+                    editor.putBoolean("RADIO_IS_PLAYING", true);
+                    editor.apply();
                 }
 
             }
@@ -123,11 +129,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Youtube button, stops the player when the activity is started
         button_youtube.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 mPlayer.stop();
+                SharedPreferences.Editor editor = mPrefs.edit();
+                editor.putBoolean("RADIO_IS_PLAYING", false);
+                editor.apply();
                 Intent intent = new Intent(MainActivity.this, YouTube.class );
                 startActivity(intent);
             }
@@ -159,6 +168,19 @@ public class MainActivity extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(), "IOException!", Toast.LENGTH_LONG).show();
                 }
                 mPlayer.start();
+                SharedPreferences.Editor editor = mPrefs.edit();
+                editor.putBoolean("RADIO_IS_PLAYING", true);
+                editor.apply();
+
+                mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                    @Override
+                    public boolean onError(MediaPlayer mp, int what, int extra) {
+                        SharedPreferences.Editor editor = mPrefs.edit();
+                        editor.putBoolean("RADIO_IS_PLAYING", false);
+                        editor.apply();
+                        return false;
+                    }
+                });
 
         //getMetadata();
 
@@ -194,7 +216,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(audioManager.isMusicActive()){
+        //Start playing the radio stream if music is not active
+        if(mPrefs.getBoolean("RADIO_IS_PLAYING", false)){
         }
         else {
             playRadio();
@@ -203,6 +226,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putBoolean("RADIO_IS_PLAYING", false);
+        editor.apply();
         super.onDestroy();
+
     }
 }
