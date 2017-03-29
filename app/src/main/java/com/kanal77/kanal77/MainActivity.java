@@ -7,12 +7,16 @@ import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -30,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
     MediaPlayer mPlayer;
 
-    ArrayList<CityWeather> weather = new ArrayList<>();
-
     Button button_startstop;
     Button button_homepage;
     Button button_contact;
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
     Boolean radioIsPlaying;
 
+    ProgressBar radioProgress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -60,15 +64,17 @@ public class MainActivity extends AppCompatActivity {
         button_alarm = (Button)findViewById(R.id.button_alarm);
         button_youtube = (Button) findViewById(R.id.button_youtube);
 
+        radioProgress = (ProgressBar)findViewById(R.id.radioProgressBar);
+        radioProgress.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
+
         context = this;
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
         radioIsPlaying = mPrefs.getBoolean("RADIO_IS_PLAYING", false);
 
-        //Start playing the radio stream if music is not active
-            playRadio();
-
+        //Start Media Player in separate thread
+        controlMediaPlayer("Play");
 
         //Buttons onClickListeners
 
@@ -86,8 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     button_startstop.setText(pause);
-                    //mPlayer.release();
-                    //playRadio();
                     mPlayer.start();
                     SharedPreferences.Editor editor = mPrefs.edit();
                     editor.putBoolean("RADIO_IS_PLAYING", true);
@@ -144,9 +148,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void playRadio() {
 
+    //For controling the mPlayer with messages
+    //Message types: Init, Play, Stop
+    public void controlMediaPlayer(final String msgString){
 
+        Thread playerThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                //Initialize mPlayer
                 mPlayer = new MediaPlayer();
                 mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 try {
@@ -167,14 +178,12 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     //Toast.makeText(getApplicationContext(), "IOException!", Toast.LENGTH_LONG).show();
                 }
-                mPlayer.start();
-                SharedPreferences.Editor editor = mPrefs.edit();
-                editor.putBoolean("RADIO_IS_PLAYING", true);
-                editor.apply();
 
+                //mPlayer onError listener, sets RADIO_IS_PLAYING to false
                 mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                     @Override
                     public boolean onError(MediaPlayer mp, int what, int extra) {
+                        threadMsg("Error");
                         SharedPreferences.Editor editor = mPrefs.edit();
                         editor.putBoolean("RADIO_IS_PLAYING", false);
                         editor.apply();
@@ -182,10 +191,79 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        //getMetadata();
+                //mPlayer onPrepare listener, hides progressbar
+                mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        threadMsg("Hide");
+                    }
+                });
 
 
+                try {
+                    threadMsg(msgString);
+                } catch (Throwable t) {
+                    // just end the background thread
+                    Log.i("Animation", "Thread  exception " + t);
+                }
+            }
 
+            private void threadMsg(String msg) {
+                if (!msg.equals(null) && !msg.equals("")) {
+                    Message msgObj = handler.obtainMessage();
+                    Bundle b = new Bundle();
+                    b.putString("message", msg);
+                    msgObj.setData(b);
+                    handler.sendMessage(msgObj);
+                }
+            }
+
+            // Define the Handler that receives messages from the thread and update the progress
+            private final Handler handler = new Handler() {
+
+                public void handleMessage(Message msg) {
+                    String controlMessage = msg.getData().getString("message");
+
+                    if(controlMessage.equalsIgnoreCase("Play")){
+                        mPlayer.start();
+                        SharedPreferences.Editor editor = mPrefs.edit();
+                        editor.putBoolean("RADIO_IS_PLAYING", true);
+                        editor.apply();
+                    }
+
+                    else{
+                        if(controlMessage.equalsIgnoreCase("Stop")){
+                            mPlayer.stop();
+                            SharedPreferences.Editor editor = mPrefs.edit();
+                            editor.putBoolean("RADIO_IS_PLAYING", false);
+                            editor.apply();
+                        }
+                        else{
+                            if(controlMessage.equalsIgnoreCase("Hide")){
+                                radioProgress.setVisibility(View.GONE);
+                            }
+                            else {
+                                if(controlMessage.equalsIgnoreCase("Error")){
+                                    Toast.makeText(
+                                            getBaseContext(),
+                                            "Error playing radio stream",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Toast.makeText(
+                                            getBaseContext(),
+                                            "Error receiving player control message",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        }
+                    }
+                }
+            };
+
+        });
+        playerThread.start();
 
 
     }
@@ -220,15 +298,14 @@ public class MainActivity extends AppCompatActivity {
         if(mPrefs.getBoolean("RADIO_IS_PLAYING", false)){
         }
         else {
-            playRadio();
+            radioProgress.setVisibility(View.VISIBLE);
+            controlMediaPlayer("Play");
         }
     }
 
     @Override
     protected void onDestroy() {
-        SharedPreferences.Editor editor = mPrefs.edit();
-        editor.putBoolean("RADIO_IS_PLAYING", false);
-        editor.apply();
+        controlMediaPlayer("Stop");
         super.onDestroy();
 
     }
