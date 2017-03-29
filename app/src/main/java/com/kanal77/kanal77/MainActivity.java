@@ -1,6 +1,7 @@
 package com.kanal77.kanal77;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences mPrefs;
 
     Boolean radioIsPlaying;
+    Boolean alarmActivated = false;
 
     ProgressBar radioProgress;
 
@@ -71,7 +74,11 @@ public class MainActivity extends AppCompatActivity {
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
+        alarmActivated = mPrefs.getBoolean("ALARM_ACTIVATED", false);
         radioIsPlaying = mPrefs.getBoolean("RADIO_IS_PLAYING", false);
+        
+        //Check if alarm is activated
+        checkAlarmActivated(alarmActivated);
 
         //Start Media Player in separate thread
         controlMediaPlayer("Play");
@@ -146,6 +153,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void checkAlarmActivated(Boolean alarmActivated) {
+        if(alarmActivated){
+            showAlarmDialog();
+        }
+        else{
+            
+        }
+    }
+
+    private void showAlarmDialog() {
+        //Set ALARM_ACTIVATED back to false so that dialog won't appear again
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putBoolean("ALARM_ACTIVATED", false);
+        editor.apply();
+
+        //Showing Alert Dialog
+        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle("Alarm");
+        alertDialog.setMessage("Разбудете се наспани со Канал 77 !");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
 
