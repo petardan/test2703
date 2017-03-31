@@ -24,6 +24,7 @@ public class Loading extends Activity {
     Context context;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
