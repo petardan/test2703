@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +23,7 @@ public class Alarm2 extends AppCompatActivity {
 
     Button setAlarm;
     Button cancelAlarm;
-    Button addAlarm;
+    FloatingActionButton addAlarm;
 
     TextView alarmTime;
     TextView repeatIntervalInfo;
@@ -50,7 +51,7 @@ public class Alarm2 extends AppCompatActivity {
 
         setAlarm = (Button)findViewById(R.id.button_set_alarm);
         cancelAlarm = (Button)findViewById(R.id.button_stop_alarm);
-        addAlarm = (Button)findViewById(R.id.button_add_alarm);
+        addAlarm = (FloatingActionButton) findViewById(R.id.alarm_fab);
         alarmTime = (TextView)findViewById(R.id.alarm_time);
         repeatIntervalInfo = (TextView)findViewById(R.id.repeat_interval_info);
         alarmIntervals = (RadioGroup)findViewById(R.id.radio_repeat_interval);
