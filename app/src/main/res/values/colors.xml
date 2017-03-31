@@ -5,6 +5,8 @@
     <color name="colorAccent">#d10909</color>
     <color name="colorWeather">#303F9F</color>
     <color name="colorAlarm">#303F9F</color>
+    <color name="colorLightGray">#D3D3D3</color>
+    <color name="colorGainsboroGray">#DCDCDC</color>
 
 
 </resources>
