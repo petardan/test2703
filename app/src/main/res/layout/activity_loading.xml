@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:src="@drawable/kanal77_logo"
+        android:src="@drawable/kanal771"
         android:id="@+id/backgroundLogo"
         android:contentDescription="@string/no_log_desc"
         android:padding="50dp"/>

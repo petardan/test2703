@@ -8,21 +8,27 @@
     <string name="main_play">Play</string>
     <string name="main_pause">Pause</string>
     <string name="main_logo_desc">kanal77 logo</string>
+    <string name="main_home_text">HOME</string>
+    <string name="main_contact_text">CONTACT</string>
+    <string name="main_alarm_text">ALARM</string>
+    <string name="main_amsm_text">AMSM</string>
+    <string name="main_weather_text">WEATHER</string>
+    <string name="main_youtube_text">YOU TUBE</string>
 
     <!-- ContactActivity strings-->
     <string name="contact_title">"Contact:"</string>
     <string name="contact_phones">"Contact phone:"</string>
-    <string name="contact_phone">"032 397&#8211;707"</string>
-    <string name="contact_fax">"032 397&#8211;717   (fax)"</string>
+    <string name="contact_phone">"+389 32 397 707"</string>
+    <string name="contact_fax">"+389 32 397 717"</string>
 
-    <string name="contact_email">"Email:"</string>
-    <string name="official_email_text">"Official email address:"</string>
+    <string name="contact_email">"Email Contacts:"</string>
+    <string name="official_email_text">"Official Email Address:"</string>
     <string name="official_email">"kanal77@kanal77.com.mk"</string>
-    <string name="webdesc_email_text">"Web Desc email address:"</string>
+    <string name="webdesc_email_text">"Web Desc Email Address:"</string>
     <string name="webdesc_email">"web@kanal77.com.mk"</string>
-    <string name="finance_email_text">"Finance:"</string>
+    <string name="finance_email_text">"Finance Email Address:"</string>
     <string name="finance_email">"finansii@kanal77.com.mk"</string>
-    <string name="marketing_email_text">"Marketing:"</string>
+    <string name="marketing_email_text">"Marketing Email Address:"</string>
     <string name="marketing_email">"marketing@kanal77.com.mk"</string>
 
     <!-- Alarm Activity -->

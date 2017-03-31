@@ -1,5 +1,6 @@
 package com.kanal77.kanal77;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +14,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 
-public class Loading extends AppCompatActivity {
+public class Loading extends Activity {
 
     ImageView backgroundLogo;
 
