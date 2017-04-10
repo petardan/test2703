@@ -34,7 +34,7 @@
 
         <receiver android:name=".AlarmReceiver" />
 
-        <activity android:name=".Alarm2" />
+        <activity android:name=".Alarm" />
         <activity android:name=".YouTube" />
     </application>
 

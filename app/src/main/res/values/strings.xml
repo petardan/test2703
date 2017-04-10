@@ -50,6 +50,7 @@
     <!--Weather Ctivity -->
     <string name="getting_weather_info">"Gathering weather info &#8230;"</string>
     <string name="getting_weather_info_error">"Weather informations are currently unavailable"</string>
+    <string name="reading_saved_weather_info_error">"Can't process weather informations"</string>
     <string name="title_activity_alarm2">Alarm2</string>
 
 

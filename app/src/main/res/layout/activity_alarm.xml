@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,10 +11,14 @@
         android:id="@+id/current_alarm_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10sp"
         android:background="@drawable/white_stroke_frame"
         android:orientation="vertical"
-        android:padding="5sp">
+        android:padding="5sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:layout_marginTop="13dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
 
         <TextView
             android:id="@+id/current_time"
@@ -49,7 +53,7 @@
             android:textStyle="bold" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/button_x_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -61,7 +65,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/current_alarm_layout"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,7 +85,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="#ffffff"
-                    android:checked="true"
                     android:text="@string/interval_fifteen_minutes"
                     android:textColor="#ffffff"
                     android:textStyle="bold" />
@@ -125,6 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="#ffffff"
+                    android:checked="true"
                     android:text="@string/interval_off"
                     android:textColor="#ffffff"
                     android:textStyle="bold" />
@@ -132,16 +138,24 @@
             </RadioGroup>
 
             <Button
-                android:id="@+id/button_start_alarm"
+                android:id="@+id/button_set_alarm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/button_start_alarm" />
+                android:text="@string/button_start_alarm"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:background="#00ffffff"/>
 
             <Button
                 android:id="@+id/button_stop_alarm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/button_stop_alarm" />
+                android:text="@string/button_stop_alarm"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:background="#00ffffff"/>
 
             <TextView
                 android:id="@+id/alarm_msg"
@@ -156,4 +170,17 @@
 
     </ScrollView>
 
-</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/alarm_fab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginTop="48dp"
+        app:srcCompat="@drawable/alarm" />
+
+</RelativeLayout>

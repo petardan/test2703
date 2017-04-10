@@ -1,6 +1,7 @@
 package com.kanal77.kanal77;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,7 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,10 +19,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
@@ -77,12 +76,23 @@ public class Weather extends AppCompatActivity {
     ImageView weatherImage;
     ProgressBar progressBar;
 
+    String savedResponse;
+
+    long lastDataDownloadTime;
+    long currentTime;
+
+    long weatherCheckInterval = 30*60*1000; //30 minutes in milliseconds
+
+    SharedPreferences mPrefs;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wheater);
 
         context = this;
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(Weather.this);
 
         weatherDesc = (TextView)findViewById(R.id.weather_desc);
         temperature = (TextView)findViewById(R.id.temperature);
@@ -98,72 +108,46 @@ public class Weather extends AppCompatActivity {
         //Initializing city spinner list
         citySpinner = (Spinner) findViewById(R.id.city_spinner);
 
+        savedResponse = mPrefs.getString("SAVED_RESPONSE", null);
 
+        lastDataDownloadTime = mPrefs.getLong("LAST_DATA_DOWNLOAD_TIME", 0);
+        currentTime = System.currentTimeMillis();
 
-        //Get weather information
-        getWeatherInfo(Openweathermap_API_URL);
+        compareTime(weatherCheckInterval, lastDataDownloadTime, currentTime);
 
 
     }
 
-    private void getWeatherInfo(String openweathermap_api_url) {
+    private void compareTime(long checkInterval, long lastDataDownloadTime, long weatherCheckInterval) {
+        if(currentTime-weatherCheckInterval >= lastDataDownloadTime ){
+            //Get weather information because last value is very old
+            downloadWeatherData(Openweathermap_API_URL);
+        }
+        else {
+            try{
+                JSONObject oldWeatherData = new JSONObject(savedResponse);
+                processResponse(oldWeatherData);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+            catch (NullPointerException e){
+                e.printStackTrace();
+                weatherDesc.setText(getResources().getString(R.string.reading_saved_weather_info_error));
+            }
+        }
+    }
+
+    private void downloadWeatherData(String openweathermap_api_url) {
 
         JsonObjectRequest req = new JsonObjectRequest(openweathermap_api_url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        int city_id;
-                        String city_name;
-                        int weather_id;
-                        String weather_main;
-                        String weather_desc;
-                        int temperature;
-
-                        CityWeather cityWeather = null;
-
                         Log.d("Response ",response.toString());
 
-                        try {
-                            JSONArray weather_conditions = response.getJSONArray("list");
-
-                            for(int i=0; i<weather_conditions.length(); i++){
-
-                                JSONObject city_json = weather_conditions.getJSONObject(i);
-
-                                //Get City info
-                                city_id = city_json.getInt("id");
-                                city_name = city_json.getString("name");
-                                cities.add(city_name);
-
-                                //Get Weather info
-                                JSONArray weather_array = city_json.getJSONArray("weather");
-                                JSONObject weather_json = weather_array.getJSONObject(0);
-
-                                weather_id = weather_json.getInt("id");
-                                weather_main = weather_json.getString("main");
-                                weather_desc = weather_json.getString("description");
-
-                                //Get Temperature info
-                                JSONObject temperature_json = city_json.getJSONObject("main");
-                                temperature = temperature_json.getInt("temp");
-
-                                //Create CityWeather object and add it to weather ArrayList
-                                cityWeather = new CityWeather(city_id, city_name, weather_id, weather_main, weather_desc, temperature);
-
-                                weather.add(cityWeather);
-                            }
-
-                            //Print weather
-                            for( int j=0; j<weather.size(); j++){
-                                Log.d("Weather", weather.get(j).toString());
-                            }
-
-                            addItemsToCitySpinner();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        processResponse(response);
 
 
                     }
@@ -185,6 +169,61 @@ public class Weather extends AppCompatActivity {
 
     }
 
+    private void processResponse(JSONObject response) {
+
+        //Save response value and response time
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putString("SAVED_RESPONSE", response.toString());
+        editor.putLong("LAST_DATA_DOWNLOAD_TIME", System.currentTimeMillis());
+        editor.apply();
+
+        int city_id;
+        String city_name;
+        int weather_id;
+        String weather_main;
+        String weather_desc;
+        int temperature;
+
+        CityWeather cityWeather = null;
+
+        try {
+            JSONArray weather_conditions = response.getJSONArray("list");
+
+            for(int i=0; i<weather_conditions.length(); i++){
+
+                JSONObject city_json = weather_conditions.getJSONObject(i);
+
+                //Get City info
+                city_id = city_json.getInt("id");
+                city_name = city_json.getString("name");
+                cities.add(city_name);
+
+                //Get Weather info
+                JSONArray weather_array = city_json.getJSONArray("weather");
+                JSONObject weather_json = weather_array.getJSONObject(0);
+
+                weather_id = weather_json.getInt("id");
+                weather_main = weather_json.getString("main");
+                weather_desc = weather_json.getString("description");
+
+                //Get Temperature info
+                JSONObject temperature_json = city_json.getJSONObject("main");
+                temperature = temperature_json.getInt("temp");
+
+                //Create CityWeather object and add it to weather ArrayList
+                cityWeather = new CityWeather(city_id, city_name, weather_id, weather_main, weather_desc, temperature);
+
+                weather.add(cityWeather);
+            }
+
+            addItemsToCitySpinner();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void addItemsToCitySpinner() {
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.weather_spinner_item, cities);
@@ -200,7 +239,7 @@ public class Weather extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCity = citySpinner.getItemAtPosition(position).toString();
                 weatherDesc.setText(weather.get(position).getWeather_main() + ", " + weather.get(position).getWeather_desc());
-                temperature.setText(Integer.toString(weather.get(position).getTemperature()));
+                temperature.setText(Integer.toString(weather.get(position).getTemperature())+ (char) 0x00B0 );
 
                 setWeatherBackground(weather.get(position).getWeather_id());
 

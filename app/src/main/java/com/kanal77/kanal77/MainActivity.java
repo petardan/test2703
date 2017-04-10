@@ -23,7 +23,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     String play = "Play";
     String pause = "Pause";
 
-    String radio_url = "http://92.55.71.42:8023/kanal77.mp3";
+    String radio_url = "http://server.speedtest.mk:8010/live.mp3";
     String homepage_url = "http://kanal77.mk/";
 
     MediaPlayer mPlayer;
@@ -83,13 +83,16 @@ public class MainActivity extends AppCompatActivity {
         //Start Media Player in separate thread
         controlMediaPlayer("Play");
 
+        getMetadata();
+
         //Buttons onClickListeners
 
         //Start/Stop functionality for starting/stopping the stream
         button_startstop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(mPlayer.isPlaying()){
-                    button_startstop.setText(play);
+                    //button_startstop.setText(play);
+                    button_startstop.setBackground(context.getResources().getDrawable(R.drawable.play1));
                     //mPlayer.release();
                     mPlayer.pause();
                     SharedPreferences.Editor editor = mPrefs.edit();
@@ -98,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else{
-                    button_startstop.setText(pause);
+                    //button_startstop.setText(pause);
+                    button_startstop.setBackground(context.getResources().getDrawable(R.drawable.pause1));
                     mPlayer.start();
                     SharedPreferences.Editor editor = mPrefs.edit();
                     editor.putBoolean("RADIO_IS_PLAYING", true);
@@ -135,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         //Alarm button
         button_alarm.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Alarm2.class);
+                Intent i = new Intent(MainActivity.this, Alarm.class);
                 startActivity(i);
             }
         });
@@ -172,8 +176,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Showing Alert Dialog
         AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle("Alarm");
-        alertDialog.setMessage("Разбудете се наспани со Канал 77 !");
+        alertDialog.setTitle("Точно е: " + mPrefs.getString("ALARM_TIME", ""));
+        alertDialog.setMessage("Разбудете се наспани со најдобрата радио мрежа - Канал 77 !");
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -275,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else{
                             if(controlMessage.equalsIgnoreCase("Hide")){
-                                radioProgress.setVisibility(View.GONE);
+                                radioProgress.setVisibility(View.INVISIBLE);
                             }
                             else {
                                 if(controlMessage.equalsIgnoreCase("Error")){
@@ -305,6 +309,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMetadata() {
 
+        Log.d(TAG, "getMetadata");
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -331,6 +337,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         //Start playing the radio stream if music is not active
         if(mPrefs.getBoolean("RADIO_IS_PLAYING", false)){
+            radioProgress.setVisibility(View.INVISIBLE);
         }
         else {
             radioProgress.setVisibility(View.VISIBLE);
