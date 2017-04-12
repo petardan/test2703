@@ -18,7 +18,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.kanal77.Volley.AppController;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -31,8 +42,12 @@ public class MainActivity extends AppCompatActivity {
     String play = "Play";
     String pause = "Pause";
 
-    String radio_url = "http://server.speedtest.mk:8010/live.mp3";
+
+    //URL with meta data
+    // String radio_url = "http://server.speedtest.mk:8010/live.mp3";
+    String radio_url = "http://92.55.71.42:8023/kanal77.mp3";
     String homepage_url = "http://kanal77.mk/";
+    String metadata_web_page = "http://live.kanal77.com.mk/onair/index.php";
 
     MediaPlayer mPlayer;
 
@@ -42,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     Button button_weather;
     Button button_alarm;
     Button button_youtube;
+
+    TextView meta_data;
 
     MediaMetadataRetriever metaRetriver;
 
@@ -54,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressBar radioProgress;
 
+    Handler metaDataHandler = new Handler();
+    Runnable metaDataRunnable;
+    int metaDataCheckInterval = 30000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -65,7 +86,9 @@ public class MainActivity extends AppCompatActivity {
         button_contact  = (Button)findViewById(R.id.button_contact);
         button_weather = (Button)findViewById(R.id.button_weather);
         button_alarm = (Button)findViewById(R.id.button_alarm);
-        button_youtube = (Button) findViewById(R.id.button_youtube);
+        button_youtube = (Button)findViewById(R.id.button_youtube);
+        meta_data = (TextView) findViewById(R.id.meta_data);
+        meta_data.setSelected(true);
 
         radioProgress = (ProgressBar)findViewById(R.id.radioProgressBar);
         radioProgress.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -83,7 +106,9 @@ public class MainActivity extends AppCompatActivity {
         //Start Media Player in separate thread
         controlMediaPlayer("Play");
 
-        getMetadata();
+        //Get song and artist from the stream itself
+        // getMetadataFromStream();
+
 
         //Buttons onClickListeners
 
@@ -159,12 +184,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     private void checkAlarmActivated(Boolean alarmActivated) {
         if(alarmActivated){
             showAlarmDialog();
-        }
-        else{
-            
         }
     }
 
@@ -267,9 +291,9 @@ public class MainActivity extends AppCompatActivity {
                         mPlayer.start();
                         SharedPreferences.Editor editor = mPrefs.edit();
                         editor.putBoolean("RADIO_IS_PLAYING", true);
+                        getMetaDataFromWebPage();
                         editor.apply();
                     }
-
                     else{
                         if(controlMessage.equalsIgnoreCase("Stop")){
                             mPlayer.stop();
@@ -294,7 +318,6 @@ public class MainActivity extends AppCompatActivity {
                                             "Error receiving player control message",
                                             Toast.LENGTH_SHORT).show();
                                 }
-
                             }
                         }
                     }
@@ -307,9 +330,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getMetadata() {
+    private void getMetadataFromStream() {
 
-        Log.d(TAG, "getMetadata");
+        Log.d(TAG, "getMetadataFromStream");
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -317,9 +340,10 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     URL url = new URL(radio_url);
                     IcyStreamMeta icy = new IcyStreamMeta(url);
+                    meta_data.setText("Artist: Song ");
 
-                    Log.d("SONG",icy.getTitle());
-                    Log.d("ARTITSi",icy.getArtist());
+                    //Log.d("SONG",icy.getTitle());
+                    //Log.d("ARTITSi",icy.getArtist());
                 } catch (MalformedURLException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -331,6 +355,43 @@ public class MainActivity extends AppCompatActivity {
         });
         t.start();
     }
+
+
+    private void getMetaDataFromWebPage() {
+
+         metaDataRunnable = new Runnable() {
+            @Override
+            public void run() {
+                // Request a string response from the provided URL.
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, metadata_web_page,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("getMetaDataFromWebPage", response.toString());
+
+                                if(response.toString().equalsIgnoreCase(meta_data.getText().toString())){
+                                   Log.d("getMetaDataFromWebPage", "Song did not change");
+                                }
+                                else{
+                                    meta_data.setText(response.toString() + "                                                                                                ");
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        meta_data.setText("Can't retrieve meta data");
+                    }
+                });
+
+                AppController.getInstance().addToRequestQueue(stringRequest);
+
+                metaDataHandler.postDelayed(metaDataRunnable, metaDataCheckInterval);
+            }
+        };
+        metaDataHandler.post(metaDataRunnable);
+
+    }
+
 
     @Override
     protected void onResume() {
