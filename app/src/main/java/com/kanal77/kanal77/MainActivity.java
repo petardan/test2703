@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     Handler metaDataHandler = new Handler();
     Runnable metaDataRunnable;
-    int metaDataCheckInterval = 30000;
+    int metaDataCheckInterval = 60000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
