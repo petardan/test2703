@@ -256,4 +256,10 @@ public class Alarm extends AppCompatActivity {
         finish();
         super.onDestroy();
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
 }

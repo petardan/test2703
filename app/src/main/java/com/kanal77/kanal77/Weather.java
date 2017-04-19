@@ -314,5 +314,9 @@ public class Weather extends AppCompatActivity {
         return output;
     }
 
-
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
 }
