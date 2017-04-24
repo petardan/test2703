@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
@@ -21,15 +20,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.kanal77.Volley.AppController;
 
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -39,8 +35,6 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
     String TAG = "Main Activity";
-    String play = "Play";
-    String pause = "Pause";
 
 
     //URL with meta data
@@ -59,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
     Button button_youtube;
 
     TextView meta_data;
-
-    MediaMetadataRetriever metaRetriver;
 
     Context context;
 
@@ -345,9 +337,6 @@ public class MainActivity extends AppCompatActivity {
                     //Log.d("SONG",icy.getTitle());
                     //Log.d("ARTITSi",icy.getArtist());
                 } catch (MalformedURLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }

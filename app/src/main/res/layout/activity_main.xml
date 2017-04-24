@@ -154,7 +154,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:layout_margin="10dp"
-                android:background="@drawable/contact_icon_png" />
+                android:background="@drawable/contacticon1" />
 
             <TextView
                 android:id="@+id/text_contact"
@@ -221,7 +221,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:layout_margin="10dp"
-                android:background="@drawable/amsm3" />
+                android:background="@drawable/amsmicon" />
 
                 <TextView
                     android:id="@+id/text_amsm"

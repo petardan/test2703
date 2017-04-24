@@ -228,7 +228,7 @@ public class Weather extends AppCompatActivity {
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.weather_spinner_item, cities);
         // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(R.layout.weather_spinner_dropdown_item);
         progressBar.setVisibility(View.INVISIBLE);
 
         // attaching data adapter to spinner
