@@ -113,12 +113,13 @@
             android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/layout_homepage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="5sp"
                 android:layout_weight="1"
-                android:orientation="vertical"
                 android:background="@drawable/boarder"
-                android:layout_margin="5sp">
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/button_homepage"
@@ -128,73 +129,74 @@
                     android:background="@drawable/kanal771" />
 
                 <TextView
-                android:id="@+id/text_home"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:text="@string/main_home_text"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                    android:id="@+id/text_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:gravity="center"
+                    android:text="@string/main_home_text"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold" />
 
-        </LinearLayout>
+            </LinearLayout>
 
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:orientation="vertical"
-    android:background="@drawable/boarder"
-    android:layout_margin="5sp">
-
-            <Button
-                android:id="@+id/button_contact"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:layout_margin="10dp"
-                android:background="@drawable/contacticon1" />
-
-            <TextView
-                android:id="@+id/text_contact"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:text="@string/main_contact_text"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold"
-                android:gravity="center"/>
-
-
-
-</LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_contact"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="5sp"
                 android:layout_weight="1"
-                android:orientation="vertical"
                 android:background="@drawable/boarder"
-                android:layout_margin="5sp">
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/button_alarm"
+                <Button
+                    android:id="@+id/button_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/contacticon1" />
+
+                <TextView
+                    android:id="@+id/text_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:gravity="center"
+                    android:text="@string/main_contact_text"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_alarm"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:layout_margin="10dp"
-                android:background="@drawable/clockpng31" />
+                android:layout_margin="5sp"
+                android:layout_weight="1"
+                android:background="@drawable/boarder"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text_alarm"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:text="@string/main_alarm_text"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                <Button
+                    android:id="@+id/button_alarm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/clockpng31" />
+
+                <TextView
+                    android:id="@+id/text_alarm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:gravity="center"
+                    android:text="@string/main_alarm_text"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -208,50 +210,52 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/layout_amsm"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
+                android:layout_margin="5sp"
                 android:layout_weight="1"
                 android:background="@drawable/boarder"
-                android:layout_margin="5sp">
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/button_amsm"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:layout_margin="10dp"
-                android:background="@drawable/amsmicon" />
+                <Button
+                    android:id="@+id/button_amsm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/amsmicon" />
 
                 <TextView
                     android:id="@+id/text_amsm"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1.5"
+                    android:gravity="center"
                     android:text="@string/main_amsm_text"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold"
-                    android:gravity="center"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
 
             <LinearLayout
+                android:id="@+id/layout_weather"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
+                android:layout_margin="5sp"
                 android:layout_weight="1"
                 android:background="@drawable/boarder"
-                android:layout_margin="5sp">
+                android:orientation="vertical">
 
 
-            <Button
-                android:id="@+id/button_weather"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="0.5"
-                android:background="@drawable/wearher1" />
+                <Button
+                    android:id="@+id/button_weather"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/wearher1" />
 
 
                 <TextView
@@ -268,20 +272,21 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_youtube"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:layout_margin="5sp"
+                android:layout_weight="1"
                 android:background="@drawable/boarder"
-                android:layout_weight="1">
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/button_youtube"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="0.5"
-                android:background="@drawable/youtube1" />
+                <Button
+                    android:id="@+id/button_youtube"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/youtube1" />
 
                 <TextView
                     android:id="@+id/text_youtube"
@@ -289,10 +294,10 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.5"
 
+                    android:gravity="center"
                     android:text="@string/main_youtube_text"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold"
-                    android:gravity="center"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

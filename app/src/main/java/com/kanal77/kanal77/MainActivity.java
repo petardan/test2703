@@ -9,13 +9,18 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +56,14 @@ public class MainActivity extends AppCompatActivity {
     Button button_weather;
     Button button_alarm;
     Button button_youtube;
+    Button button_amsm;
+
+    LinearLayout layout_homepage;
+    LinearLayout layout_contact;
+    LinearLayout layout_alarm;
+    LinearLayout layout_amsm;
+    LinearLayout layout_weather;
+    LinearLayout layout_youtube;
 
     TextView meta_data;
 
@@ -79,6 +92,18 @@ public class MainActivity extends AppCompatActivity {
         button_weather = (Button)findViewById(R.id.button_weather);
         button_alarm = (Button)findViewById(R.id.button_alarm);
         button_youtube = (Button)findViewById(R.id.button_youtube);
+        button_amsm = (Button)findViewById(R.id.button_amsm);
+
+        //Defining button layouts
+        layout_homepage = (LinearLayout)findViewById(R.id.layout_homepage);
+        layout_contact = (LinearLayout)findViewById(R.id.layout_contact);
+        layout_alarm = (LinearLayout)findViewById(R.id.layout_alarm);
+        layout_amsm = (LinearLayout)findViewById(R.id.layout_amsm);
+        layout_weather = (LinearLayout)findViewById(R.id.layout_weather);
+        layout_youtube = (LinearLayout)findViewById(R.id.layout_youtube);
+        //Starting animation that will show the buttons
+        showButtonsAnimation(layout_homepage);
+
         meta_data = (TextView) findViewById(R.id.meta_data);
         meta_data.setSelected(true);
 
@@ -100,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Get song and artist from the stream itself
         // getMetadataFromStream();
+        getMetaDataFromWebPage();
 
 
         //Buttons onClickListeners
@@ -176,6 +202,41 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void showButtonsAnimation(final LinearLayout button_layout) {
+
+        //Animate HomePage Layout
+        final ScaleAnimation zoomAnimation = new ScaleAnimation(0, 1f, 0, 1f, Animation.RELATIVE_TO_SELF, (float)0.5,Animation.RELATIVE_TO_SELF, (float)0.5);
+        zoomAnimation.setDuration(1500);
+        zoomAnimation.setFillAfter(true);
+        zoomAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        layout_homepage.setAnimation(zoomAnimation);
+        SystemClock.sleep(1000);
+        layout_weather.setAnimation(zoomAnimation);
+        layout_alarm.setAnimation(zoomAnimation);
+        layout_amsm.setAnimation(zoomAnimation);
+        layout_contact.setAnimation(zoomAnimation);
+        layout_youtube.setAnimation(zoomAnimation);
+
+
+
+
+
+
+    }
 
 
     private void checkAlarmActivated(Boolean alarmActivated) {
@@ -239,6 +300,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onError(MediaPlayer mp, int what, int extra) {
                         threadMsg("Error");
+                        meta_data.setText("Can't play radio stream");
                         SharedPreferences.Editor editor = mPrefs.edit();
                         editor.putBoolean("RADIO_IS_PLAYING", false);
                         editor.apply();
@@ -283,7 +345,6 @@ public class MainActivity extends AppCompatActivity {
                         mPlayer.start();
                         SharedPreferences.Editor editor = mPrefs.edit();
                         editor.putBoolean("RADIO_IS_PLAYING", true);
-                        getMetaDataFromWebPage();
                         editor.apply();
                     }
                     else{
@@ -400,5 +461,10 @@ public class MainActivity extends AppCompatActivity {
         controlMediaPlayer("Stop");
         super.onDestroy();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.moveTaskToBack(true);
     }
 }
