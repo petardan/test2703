@@ -53,5 +53,9 @@
     <string name="reading_saved_weather_info_error">"Can't process weather informations"</string>
     <string name="title_activity_alarm2">Alarm2</string>
 
+    <!--Activity strings -->
+    <string name="media_palyer_onError_notification">Can\'t play radio stream</string>
+    <string name="metadata_error_notification">Can\'t retrieve meta data</string>
+
 
 </resources>

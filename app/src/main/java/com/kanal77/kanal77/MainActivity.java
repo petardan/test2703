@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         layout_weather = (LinearLayout)findViewById(R.id.layout_weather);
         layout_youtube = (LinearLayout)findViewById(R.id.layout_youtube);
         //Starting animation that will show the buttons
-        showButtonsAnimation(layout_homepage);
+        showButtonsAnimation();
 
         meta_data = (TextView) findViewById(R.id.meta_data);
         meta_data.setSelected(true);
@@ -202,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void showButtonsAnimation(final LinearLayout button_layout) {
+    private void showButtonsAnimation() {
 
         //Animate HomePage Layout
         final ScaleAnimation zoomAnimation = new ScaleAnimation(0, 1f, 0, 1f, Animation.RELATIVE_TO_SELF, (float)0.5,Animation.RELATIVE_TO_SELF, (float)0.5);
@@ -280,10 +279,6 @@ public class MainActivity extends AppCompatActivity {
                     mPlayer.setDataSource(radio_url);
                 } catch (IllegalArgumentException e) {
                     //Toast.makeText(getApplicationContext(), "IllegalArgumentException!", Toast.LENGTH_LONG).show();
-                } catch (SecurityException e) {
-                    //Toast.makeText(getApplicationContext(), "SecurityException!", Toast.LENGTH_LONG).show();
-                } catch (IllegalStateException e) {
-                    //Toast.makeText(getApplicationContext(), "YIllegalStateException!", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -292,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IllegalStateException e) {
                     //Toast.makeText(getApplicationContext(), "IllegalStateException!", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
-                    //Toast.makeText(getApplicationContext(), "IOException!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
                 }
 
                 //mPlayer onError listener, sets RADIO_IS_PLAYING to false
@@ -300,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onError(MediaPlayer mp, int what, int extra) {
                         threadMsg("Error");
-                        meta_data.setText("Can't play radio stream");
+                        meta_data.setText(getString(R.string.media_palyer_onError_notification));
                         SharedPreferences.Editor editor = mPrefs.edit();
                         editor.putBoolean("RADIO_IS_PLAYING", false);
                         editor.apply();
@@ -393,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     URL url = new URL(radio_url);
                     IcyStreamMeta icy = new IcyStreamMeta(url);
-                    meta_data.setText("Artist: Song ");
+                    meta_data.setText("");
 
                     //Log.d("SONG",icy.getTitle());
                     //Log.d("ARTITSi",icy.getArtist());
@@ -417,19 +412,19 @@ public class MainActivity extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Log.d("getMetaDataFromWebPage", response.toString());
+                                Log.d("getMetaDataFromWebPage", response);
 
-                                if(response.toString().equalsIgnoreCase(meta_data.getText().toString())){
+                                if(response.equalsIgnoreCase(meta_data.getText().toString())){
                                    Log.d("getMetaDataFromWebPage", "Song did not change");
                                 }
                                 else{
-                                    meta_data.setText(response.toString() + "                                                                                                ");
+                                    meta_data.setText(response + "                                                                                                ");
                                 }
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        meta_data.setText("Can't retrieve meta data");
+                        meta_data.setText(getString(R.string.metadata_error_notification));
                     }
                 });
 
