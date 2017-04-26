@@ -10,4 +10,8 @@
     <stroke
         android:width="2sp"
         android:color="@color/colorPrimaryDark" />
+
+    <solid android:color="#ffffff" />
+
+
     </shape>

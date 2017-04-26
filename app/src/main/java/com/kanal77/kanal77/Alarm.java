@@ -10,6 +10,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
@@ -238,6 +240,29 @@ public class Alarm extends AppCompatActivity {
         });
 
 
+    }
+
+    private void animateAlarmFab() {
+        //Animate HomePage Layout
+        final ScaleAnimation zoomAnimation = new ScaleAnimation(0, 1f, 0, 1f, Animation.RELATIVE_TO_SELF, (float)0.5,Animation.RELATIVE_TO_SELF, (float)0.5);
+        zoomAnimation.setDuration(1000);
+        zoomAnimation.setFillAfter(true);
+        zoomAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        addAlarm.setAnimation(zoomAnimation);
     }
 
     private void cancelAlarm() {

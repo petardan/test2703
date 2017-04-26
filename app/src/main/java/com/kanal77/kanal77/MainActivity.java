@@ -440,15 +440,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
         //Start playing the radio stream if music is not active
-        if(mPrefs.getBoolean("RADIO_IS_PLAYING", false)){
+        if(mPrefs.getBoolean("RADIO_IS_PLAYING", true)){
             radioProgress.setVisibility(View.INVISIBLE);
         }
         else {
             radioProgress.setVisibility(View.VISIBLE);
             controlMediaPlayer("Play");
         }
+        super.onResume();
+
     }
 
     @Override

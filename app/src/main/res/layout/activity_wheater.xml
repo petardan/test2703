@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.kanal77.kanal77.MainActivity">
+    tools:context="com.kanal77.kanal77.MainActivity"
+    android:background="@drawable/background_weather">
 
 
     <RelativeLayout
@@ -14,15 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1.5"
-        android:background="@color/colorPrimary"
         android:padding="20sp">
 
         <ImageView
             android:id="@+id/weather_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/clear"
-            android:scaleType="fitXY"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/sunny"/>
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -40,7 +39,7 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:padding="30sp"
-        android:background="@color/colorWeather">
+        >
 
         <Spinner
             android:id="@+id/city_spinner"

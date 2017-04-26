@@ -101,7 +101,7 @@ public class Weather extends AppCompatActivity {
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
         weatherImage = (ImageView) findViewById(R.id.weather_image);
         //Deafult rounded weatherImage
-        weatherImage.setImageBitmap(getRoundedCornerBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.clear)));
+        weatherImage.setImageBitmap(getRoundedCornerBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.sunny)));
 
 
 
@@ -258,7 +258,7 @@ public class Weather extends AppCompatActivity {
         //Set weather picture based on the main weather id
         if(weatherID/100 == 2){
             //Weather is Thunderstorm
-            weatherImage.setImageBitmap(getRoundedCornerBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.thunderstorm)));
+            weatherImage.setImageBitmap(getRoundedCornerBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.storm)));
         }
         else if(weatherID/100==3){
             //Weather is Drizzle
@@ -266,7 +266,7 @@ public class Weather extends AppCompatActivity {
         }
         else if(weatherID/100==5){
             //Weather is Rain
-            weatherImage.setImageBitmap(getRoundedCornerBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.rain)));
+            weatherImage.setImageBitmap(getRoundedCornerBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.rainy)));
         }
         else if(weatherID/100==6){
             //Weather is Snow
@@ -279,11 +279,11 @@ public class Weather extends AppCompatActivity {
         else if(weatherID/100==8){
             if(weatherID==800){
                 //Weather is Clear
-                weatherImage.setImageBitmap(getRoundedCornerBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.clear)));
+                weatherImage.setImageBitmap(getRoundedCornerBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.sunny)));
             }
             else{
                 //Weather is Clouds
-                weatherImage.setImageBitmap(getRoundedCornerBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.clouds)));
+                weatherImage.setImageBitmap(getRoundedCornerBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.cloudy)));
             }
         }
         else if(weatherID/100==9){
